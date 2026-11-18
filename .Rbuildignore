@@ -1,0 +1,6 @@
+^LICENSE\.md$
+^README\.md$
+^modelo_colab\.ipynb$
+^\.gitignore$
+^.*\.Rproj$
+^\.Rproj\.user$

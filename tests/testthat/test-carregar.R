@@ -1,0 +1,10 @@
+test_that("sih_carregar reads the local cache and logs each UF/month", {
+  dir <- withr_tempdir()
+  saveRDS(base_sintetica(), file.path(dir, "sih_rd_rs_2025_01.rds"))
+  saveRDS(base_sintetica()[1:2, ], file.path(dir, "sih_rd_sc_2025_01.rds"))
+  b <- sih_carregar(c("RS", "SC"), "2025-01-01", "2025-01-31", dir_cache = dir)
+  expect_equal(nrow(b), 10)
+  log <- attr(b, "log")
+  expect_equal(log$origem, c("local", "local"))
+  expect_equal(log$linhas, c(8L, 2L))
+})
