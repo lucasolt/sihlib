@@ -47,3 +47,11 @@ test_that("grupo from sih_filtrar is carried along", {
   expect_true("grupo" %in% names(int))
   expect_true(all(int$grupo == "psicoses"))
 })
+
+test_that("emendar = FALSE returns one row per AIH", {
+  aih <- reconstruir_internacoes(base_sintetica(), emendar = FALSE)
+  expect_equal(sort(aih$aihs), c("A1", "A2", "B1", "B2", "C1", "C2"))
+  expect_false(any(aih$emendado))
+  expect_equal(aih$n_linhas[aih$aihs == "A1"], 2)
+  expect_equal(aih$motivos[aih$aihs == "A1"], "12")
+})

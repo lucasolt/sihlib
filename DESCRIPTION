@@ -1,6 +1,6 @@
 Package: sihlib
 Title: Load, Filter and Reconstruct SIH/SUS Hospital Admissions
-Version: 0.1.0
+Version: 0.2.0
 Authors@R:
     person("lucasolt", email = "lucasolt@users.noreply.github.com", role = c("aut", "cre", "cph"))
 Description: Helpers to analyse SIH/SUS (Brazilian public hospital information

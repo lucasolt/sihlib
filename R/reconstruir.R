@@ -16,6 +16,8 @@
 #'   `grupo` (from [sih_filtrar()] with ranges) is carried along if present.
 #' @param gap Maximum days between the end of one AIH and the start of the next
 #'   for them to be chained.
+#' @param emendar If `FALSE`, stops after step 1: one row per AIH, same
+#'   columns (`aihs` is then the AIH number and `motivos` its `COBRANCA`).
 #' @return One row per stay: `chave`, `id`, `CNES`, `ESPEC`, `MUNIC_RES`,
 #'   `MUNIC_MOV`, `NASC`, `SEXO`, `diag` (main diagnosis of the first AIH),
 #'   `ini`, `fim`, `n_aih_principais`, `n_linhas`, `aihs` (AIH numbers joined
@@ -23,7 +25,7 @@
 #'   `motivos` (`COBRANCA` at the end of each AIH), `obito`, `valor`, `dias`,
 #'   `emendado` and, if present, `grupo`.
 #' @export
-reconstruir_internacoes <- function(base, gap = 1) {
+reconstruir_internacoes <- function(base, gap = 1, emendar = TRUE) {
   exigir_colunas(base, c("N_AIH", "IDENT", "CNES", "NASC", "SEXO", "MUNIC_RES", "MUNIC_MOV", "ESPEC",
                          "DIAG_PRINC", "DT_INTER", "DT_SAIDA", "COBRANCA", "MORTE", "VAL_TOT"))
   tem_grupo <- "grupo" %in% names(base)
@@ -57,7 +59,7 @@ reconstruir_internacoes <- function(base, gap = 1) {
     dplyr::arrange(chave, ini, fim) |>
     dplyr::group_by(chave) |>
     dplyr::mutate(fim_ant = dplyr::lag(cummax(as.numeric(fim))),   # latest end up to the previous AIH
-                  novo = is.na(fim_ant) | as.numeric(ini) - fim_ant > gap,
+                  novo = if (emendar) is.na(fim_ant) | as.numeric(ini) - fim_ant > gap else TRUE,
                   id = cumsum(novo)) |>
     dplyr::group_by(chave, id) |>
     dplyr::summarise(# diags must come before `diag` is overwritten by its first value

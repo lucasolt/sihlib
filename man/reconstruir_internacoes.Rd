@@ -4,7 +4,7 @@
 \alias{reconstruir_internacoes}
 \title{Reconstruct hospital stays from AIH lines}
 \usage{
-reconstruir_internacoes(base, gap = 1)
+reconstruir_internacoes(base, gap = 1, emendar = TRUE)
 }
 \arguments{
 \item{base}{Data.frame of AIH lines (all character, as from
@@ -15,6 +15,9 @@ reconstruir_internacoes(base, gap = 1)
 
 \item{gap}{Maximum days between the end of one AIH and the start of the next
 for them to be chained.}
+
+\item{emendar}{If \code{FALSE}, stops after step 1: one row per AIH, same
+columns (\code{aihs} is then the AIH number and \code{motivos} its \code{COBRANCA}).}
 }
 \value{
 One row per stay: \code{chave}, \code{id}, \code{CNES}, \code{ESPEC}, \code{MUNIC_RES},
